@@ -21,3 +21,7 @@
 .text {
   text-decoration: none;
 }
+
+.link-text {
+  color: #fff !important;
+}

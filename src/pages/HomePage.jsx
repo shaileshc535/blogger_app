@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import { CustomRoutes } from "../routes";
 import { Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Modal from "../components/Modal";
 import Dashboard from "./Dashbard";
 import Blog from "./Blog";
 
 const HomePage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsOpen(true), 3000);
+    setIsOpen(false);
+  }, []);
+
   return (
     <HashRouter basename="/">
       <Grid className="container">
@@ -26,6 +34,7 @@ const HomePage = () => {
           <Footer />
         </Grid>
       </Grid>
+      {isOpen && <Modal setIsOpen={setIsOpen} />}
     </HashRouter>
   );
 };

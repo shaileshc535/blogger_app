@@ -17,12 +17,12 @@ const Footer = () => {
       <Container maxWidth="lg">
         <Grid container direction="column" alignItems="center">
           <Grid item xs={12}>
-            <Typography color="black" variant="h5">
+            <Typography className="link-text" variant="h5">
               React Blogger App
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography color="textSecondary" variant="subtitle1">
+            <Typography className="link-text" variant="subtitle1">
               {`${new Date().getFullYear()} | React | Material UI | React Router`}
             </Typography>
           </Grid>

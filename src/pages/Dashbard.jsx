@@ -19,12 +19,25 @@ const Dashbard = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  let [searchValue, setSearchValue] = useState("");
   let [blog, setBlogs] = useState([]);
   let [blogsCategory, setBlogsCategory] = useState([]);
-  let [sortDate, setSortDate] = useState(1);
-  let [sortName, setSortName] = useState(1);
   let [categoryName, setCategoryName] = useState("");
+
+  const [state, setState] = useState({
+    searchValue: "",
+    sortDate: 1,
+    sortName: 1,
+  });
+
+  const { searchValue, sortDate, sortName } = state;
+
+  const handleInputChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+    searchData();
+    SortByName();
+    SortByDate();
+  };
 
   const Base_URL = "https://bloger-app-server.herokuapp.com";
   // const Base_URL = "http://localhost:8080";
@@ -36,39 +49,33 @@ const Dashbard = () => {
     cond: { search: searchValue },
   };
 
-  const searchData = async (e) => {
-    if (searchValue !== undefined || searchValue !== null) {
-      retrieveBlogs();
-    } else {
-      setSearchValue("");
-      retrieveBlogs();
-    }
+  const searchData = () => {
+    retrieveBlogs();
   };
 
   const SortByName = () => {
-    if (sortName === 1) {
-      setSortName(-1);
+    if (state.sortName === 1) {
+      setState.SortName(-1);
       retrieveBlogs();
     } else {
-      setSortName(1);
+      setState.SortName(1);
       retrieveBlogs();
     }
   };
 
-  const SearchByCategory = async (id) => {
-    await setCategoryName(id);
-
+  const SearchByCategory = async (e) => {
+    setCategoryName(e.target.value);
     if (categoryName !== "") {
       retrieveBlogsByCategoryId();
     }
   };
 
   const SortByDate = () => {
-    if (sortDate === 1) {
-      setSortDate(-1);
+    if (state.sortDate === 1) {
+      setState.SortDate(-1);
       retrieveBlogs();
     } else {
-      setSortDate(1);
+      setState.SortDate(1);
       retrieveBlogs();
     }
   };
@@ -163,10 +170,7 @@ const Dashbard = () => {
                   label="Search"
                   name="searchValue"
                   value={searchValue}
-                  onChange={(e) => {
-                    setSearchValue(e.target.value);
-                    searchData();
-                  }}
+                  onChange={handleInputChange}
                   variant="outlined"
                   size="small"
                   color="primary"
@@ -180,16 +184,16 @@ const Dashbard = () => {
                   label="Filter by category"
                   name="categoryName"
                   value={categoryName}
-                  // onChange={(e) => SearchByCategory}
+                  onChange={SearchByCategory}
                   size="small"
                   color="primary"
                 >
                   <MenuItem
                     value="all"
-                    onClick={() => {
-                      setCategoryName("All");
-                      retrieveBlogs();
-                    }}
+                    // onClick={() => {
+                    //   setCategoryName("All");
+                    //   retrieveBlogs();
+                    // }}
                   >
                     All
                   </MenuItem>
@@ -198,9 +202,9 @@ const Dashbard = () => {
                       <MenuItem
                         value={item._id}
                         key={i}
-                        onClick={() => {
-                          SearchByCategory(item._id);
-                        }}
+                        // onClick={() => {
+                        //   SearchByCategory(item._id);
+                        // }}
                       >
                         {item.category_name}
                       </MenuItem>
@@ -215,10 +219,7 @@ const Dashbard = () => {
                   label="Sort By Name"
                   name="sortName"
                   value={sortName}
-                  onChange={(e) => {
-                    setSortName(e.target.value);
-                    SortByName();
-                  }}
+                  onChange={handleInputChange}
                   size="small"
                   color="primary"
                 >
@@ -234,10 +235,7 @@ const Dashbard = () => {
                   label="Sort By Date"
                   name="sortDate"
                   value={sortDate}
-                  onChange={(e) => {
-                    setSortDate(e.target.value);
-                    SortByDate();
-                  }}
+                  onChange={handleInputChange}
                   size="small"
                   color="primary"
                 >

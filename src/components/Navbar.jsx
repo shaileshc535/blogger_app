@@ -39,6 +39,7 @@ const Navbar = () => {
               mr: 2,
               display: { xs: "none", md: "flex" },
             }}
+            className="link-text"
           >
             Blogger App
           </Typography>
@@ -73,12 +74,12 @@ const Navbar = () => {
             >
               <Link
                 to={CustomRoutes.Dashboard.path}
-                color="black"
-                underline="none"
-                variant="button"
+                style={{ textDecoration: "none" }}
               >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Home</Typography>
+                  <Typography textAlign="center" className="link-text">
+                    Home
+                  </Typography>
                 </MenuItem>
               </Link>
             </Menu>
@@ -88,8 +89,9 @@ const Navbar = () => {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            className="link-text"
           >
-            React Starter App
+            Blogger App
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Box
@@ -103,12 +105,12 @@ const Navbar = () => {
             >
               <Link
                 to={CustomRoutes.Dashboard.path}
-                color="black"
-                underline="none"
-                variant="button"
+                style={{ textDecoration: "none" }}
               >
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Home</Typography>
+                  <Typography textAlign="center" className="link-text">
+                    Home
+                  </Typography>
                 </MenuItem>
               </Link>
             </Box>
