@@ -9,6 +9,7 @@ import {
   Divider,
   Pagination,
   MenuItem,
+  Stack,
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
@@ -16,9 +17,9 @@ import { Link } from "react-router-dom";
 
 const Dashbard = () => {
   const [loading, setLoading] = useState(false);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  const [limit] = useState(9);
+  let [page, setPage] = useState();
+  let [totalPage, setTotalPage] = useState(1);
   let [blog, setBlogs] = useState([]);
   let [blogsCategory, setBlogsCategory] = useState([]);
   let [categoryName, setCategoryName] = useState("");
@@ -85,11 +86,10 @@ const Dashbard = () => {
       .post(Base_URL + `/blog/list`, requestedData)
       .then((res) => {
         if (res.status === 200) {
-          setBlogs(res.data.data);
-          setLimit(res.data.limit);
-          setPage(res.data.page);
-          setTotalPage(res.data.totalPages);
           setLoading(false);
+          setBlogs(res.data.data);
+          // setPage(res.data.page);
+          setTotalPage(res.data.totalPages);
         }
       })
       .catch((err) => {
@@ -99,7 +99,7 @@ const Dashbard = () => {
 
   const retrieveBlogsCategory = () => {
     axios
-      .post(Base_URL + `/blog-category/list`, requestedData)
+      .post(Base_URL + `/blog-category/list`)
       .then((res) => {
         if (res.status === 200) {
           setBlogsCategory(res.data.data);
@@ -132,6 +132,14 @@ const Dashbard = () => {
     retrieveBlogs();
     retrieveBlogsCategory();
   }, []);
+
+  const handlePageChange = async (a, b) => {
+    setPage(b);
+    console.log("b", b);
+    setLoading(true);
+    console.log("page", page);
+    await retrieveBlogs();
+  };
 
   return (
     <Grid
@@ -188,24 +196,10 @@ const Dashbard = () => {
                   size="small"
                   color="primary"
                 >
-                  <MenuItem
-                    value="all"
-                    // onClick={() => {
-                    //   setCategoryName("All");
-                    //   retrieveBlogs();
-                    // }}
-                  >
-                    All
-                  </MenuItem>
+                  <MenuItem value="all">All</MenuItem>
                   {blogsCategory &&
                     blogsCategory.map((item, i) => (
-                      <MenuItem
-                        value={item._id}
-                        key={i}
-                        // onClick={() => {
-                        //   SearchByCategory(item._id);
-                        // }}
-                      >
+                      <MenuItem value={item._id} key={i}>
                         {item.category_name}
                       </MenuItem>
                     ))}
@@ -370,13 +364,15 @@ const Dashbard = () => {
             </Grid>
             <Grid container justify="flex-end" className="p-3-all ">
               {totalPage > 1 ? (
-                <Pagination
-                  count={totalPage}
-                  page={page}
-                  onChange={(e, page) => setPage(page)}
-                  variant="outlined"
-                  shape="rounded"
-                />
+                <Stack spacing={2}>
+                  <Pagination
+                    count={totalPage}
+                    page={page}
+                    onChange={(e, page) => handlePageChange(e, page)}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                </Stack>
               ) : (
                 ""
               )}
