@@ -26,8 +26,8 @@ const Dashbard = () => {
   let [sortName, setSortName] = useState(1);
   let [categoryName, setCategoryName] = useState("");
 
-  // const Base_URL = "https://bloger-app-server.herokuapp.com";
-  const Base_URL = "http://localhost:8080";
+  const Base_URL = "https://bloger-app-server.herokuapp.com";
+  // const Base_URL = "http://localhost:8080";
 
   const requestedData = {
     page: page,
